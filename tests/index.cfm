@@ -15,6 +15,10 @@
 	day04 = obj.tests("04");
 	writedump(var=day04, label="day04");	
 	
+	obj = createObject("component", "tests.day05");
+	day05 = obj.tests("05");
+	writedump(var=day05, label="day05");	
+	
 </cfscript>
 
 

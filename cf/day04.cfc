@@ -42,8 +42,8 @@ component  extends="cf.common"  {
 	
 	private function writeBoard(required array boards, required array currentBoard){
 		arguments.boards.append(arguments.currentBoard);
-		var verticalVersionofBoard=createVerticalBoard(currentBoard);
-		arguments.boards.append(verticalVersionofBoard);
+		//var verticalVersionofBoard=createVerticalBoard(currentBoard);
+		//arguments.boards.append(verticalVersionofBoard);
 		return arguments.boards;
 	}
 	
@@ -67,6 +67,7 @@ component  extends="cf.common"  {
 	
 	public function getWinners(required array boards, required array calledNumbers) {
 		var winners = [];
+		var winnersBoardIndex=[];
 		
 		cfloop(from=1, to=arrayLen(calledNumbers), index="calledNumberIndex") {
 			//writedump(calledNumbers[calledNumberIndex]);
@@ -83,6 +84,8 @@ component  extends="cf.common"  {
 						thisRow[foundNumberPosition] = -1;
 						boards[boardIndex][rowIndex]=arrayToList(thisRow, " ");
 						if (arraySum(thisRow)==-5) {
+							winnersBoardIndex.append(boardIndex);
+							writedump("winnerslength: #arrayLen(winnersBoardIndex)#");
 							winners.append((boards[boardIndex]));
 							writedump("Winner");
 							writedump(var=boards[boardIndex], label="winning board: #boardIndex#");
