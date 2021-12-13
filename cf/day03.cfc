@@ -11,6 +11,24 @@ component  extends="cf.common"  {
 		
 	}
 	
+	/*Part 2*/
+	public function solvePart2(required string day, required boolean testData){
+		var inputs = getInputsAsArray(day, testData);
+		var oxygenRating = getOxygenRating(inputs);
+		var co2Rating = getCORating(inputs);
+		return (oxygenRating * co2Rating);
+	}
+	
+	
+	
+	public function getOxygenRating(required array inputs){
+		return convertBinaryToDecimal(getRating(arguments.inputs, "gamma")[1]);
+	}
+	
+	public function getCORating(required array inputs){
+		return convertBinaryToDecimal(getRating(arguments.inputs, "epsilon")[1]);
+	}
+	
 	public function buildBinaryBits(required array inputs) {
 		var ratesInBinary = {"gammaRate":"", "epsilonRate":""};
 		cfloop(from=1, to="#len(inputs[1])#", index="index") {
@@ -67,34 +85,21 @@ component  extends="cf.common"  {
 	
 	
 	
-	/*Part 2*/
-	public function solvePart2(required string day, required boolean testData){
-		var inputs = getInputsAsArray(day, testData);
-		var oxygenRating = getOxygenRating(inputs);
-		var co2Rating = getCORating(inputs);
-		return (oxygenRating * co2Rating);
-	}
+
 	
-	public function getOxygenRating(required array inputs){
-		return convertBinaryToDecimal(getRating(arguments.inputs, "gamma")[1]);
-	}
 	
-	public function getCORating(required array inputs){
-		return convertBinaryToDecimal(getRating(arguments.inputs, "epsilon")[1]);
-	}
 	
 	private function getRating(required array inputs, required string ratingType) {
-		copyOfInputs = duplicate(inputs);
 		var bitChoice = "mostCommonBit";
 		if (ratingType=="epsilon") {
 			bitChoice = "leastCommonBit";
 		}
 		cfloop(from=1, to="#len(inputs[1])#", index="index") {
-			bitCounts = getBinaryBit(index, copyOfInputs);
+			bitCounts = getBinaryBit(index, arguments.inputs);
 			bitCounts = getMostAndLeastCommonBit(bitCounts.zeroCount, bitCounts.oneCount, arguments.ratingType);
-			copyOfInputs = keepNumbersWithValueAtPosition(copyOfInputs, bitCounts[bitChoice],index);
+			arguments.inputs = keepNumbersWithValueAtPosition(arguments.inputs, bitCounts[bitChoice],index);
 		}
-		return copyOfInputs;
+		return arguments.inputs;
 	}
 	
 	public function keepNumbersWithValueAtPosition(required array inputs, required numeric value, required numeric columnNumber) {
