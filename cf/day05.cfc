@@ -10,7 +10,7 @@ component  extends="cf.common"  {
 			var matrix = buildEmptyMatrix(1000,1000);
 		}
 		var coordinateSets  = getCoordinates(inputs);
-		var populatedMatrix = populateMatrix(matrix, coordinateSets);
+		var populatedMatrix = populateMatrix(matrix, coordinateSets,false);
 		if (testData) {
 			visualizeMatrix(populatedMatrix);
 		}
@@ -63,6 +63,7 @@ component  extends="cf.common"  {
 			}
 			writeoutput("<br>");	
 		}
+		writeoutput("<br><br>");
 		
 	}
 	
@@ -78,7 +79,7 @@ component  extends="cf.common"  {
 		return coordinateSetTwo;
 	}
 	
-	public function populateMatrix(required array matrix, required array coordinateSets) {
+	public function populateMatrix(required array matrix, required array coordinateSets, required boolean checkDiagonals) {
 		for (i = 1; i <= arrayLen(coordinateSets); i++) {
 			x1 = coordinateSets[i]["x1"] +1;
 			y1 = coordinateSets[i]["y1"] +1;
@@ -86,16 +87,45 @@ component  extends="cf.common"  {
     		y2 = coordinateSets[i]["y2"] +1;
     		
     		if (y1==y2) {
-				cfloop(from=x1, to=x2, index=x, step=getStepDirection(x1,x2)) {
+    			//horizontal line
+    			maxTo = largest(x1,x2);
+				cfloop(from=smallest(x1,x2), to=maxTo, index="x") {
 					matrix[x][y1] = matrix[x][y1] + 1;
 				}
 			}
 			
-			if (x1==x2){
-				cfloop(from=y1, to=y2, index=y,step=getStepDirection(y1,y2) ) {
-					matrix[x2][y] = matrix[x2][y] + 1;
+			else if (x1==x2){
+				//vertical line
+				maxTo = largest(y1,y2);
+				cfloop(from=smallest(y1,y2), to=maxto, index=y ) {
+					matrix[x1][y] = matrix[x1][y] + 1;
 				}
 			}
+			else if (arguments.checkDiagonals) {
+				//diagonal line
+				maxTo = abs(x1 - x2 );
+				cfloop(from=1, to=maxTo+1, index="z") {
+					matrix[x1][y1] = matrix[x1][y1] + 1;
+					if (x2>x1) {
+						x1=x1+1;
+					}
+					else {
+						x1=x1-1;
+					}
+					
+					if (y2>y1){
+						y1=y1+1;
+					}
+					else  {
+						y1=y1-1;
+					}			
+		
+				}
+				
+				
+			}
+			
+			
 		}
 		return matrix;
 	}
@@ -110,7 +140,19 @@ component  extends="cf.common"  {
 	/*Part 2*/
 	public function solvePart2(required string day, required boolean testData){
 		var inputs = getInputsAsArray(day, testData);
-		return 1;
+		if (testData){
+		var matrix = buildEmptyMatrix(9,9);
+		}
+		else {
+			var matrix = buildEmptyMatrix(1000,1000);
+		}
+		var coordinateSets  = getCoordinates(inputs);
+		var populatedMatrix = populateMatrix(matrix, coordinateSets,true);
+		if (testData) {
+			visualizeMatrix(populatedMatrix);
+		}
+		var score = getScore(populatedMatrix, 2);
+		return score;
 	}
 	
 	

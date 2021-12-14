@@ -9,6 +9,9 @@ component extends="tests.common" {
 		arrayAppend(testArray, "Day #arguments.day# Part 1 Test: #isNumber(answer)# isNumeric");
 		arrayAppend(testArray, "Day #arguments.day# Part 1 Test: #equality(answer, 5)#  #answer# equals 5");
 		
+		var answer = solvePart2("05", true);
+		arrayAppend(testArray, "Day #arguments.day# Part 1 Test: #isNumber(answer)# isNumeric");
+		arrayAppend(testArray, "Day #arguments.day# Part 1 Test: #equality(answer, 12)#  #answer# equals 12");
 	
 	
 		return testArray;		

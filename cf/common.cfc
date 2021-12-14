@@ -21,4 +21,18 @@ component  {
  		}
  		return "C:\Domains\AdventOfCode2021\inputs\input" & day & ".txt"; 
  	}
+ 	
+ 	private function smallest(required numeric number1, required numeric number2) {
+		if (number1 <= number2){
+			return number1;
+		}
+		return number2;
+	}
+	
+	private function largest(required numeric number1, required numeric number2) {
+		if (number1 >= number2){
+			return number1;
+		}
+		return number2;
+	}
 }
